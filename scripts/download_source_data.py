@@ -33,6 +33,14 @@ DATASETS = {
         "url": "https://ghzrzyj.cq.gov.cn/ztlm_186/ghgb/ztgh/202406/P020250617415109349125.pdf",
         "sha256": "C538F40EB78DAF0AD1096F410A42728EF03309461968A67B81A0A3DA1E75405F",
     },
+    "transport_plan_2026_2030": {
+        "filename": "chongqing_transport_plan_2026-2030.pdf",
+        "url": (
+            "https://jtysw.cq.gov.cn/zwgk_240/zfxxgkml/zcwj/qtwj/"
+            "202608/W020260820540097135901.pdf"
+        ),
+        "sha256": "963B83B6FEF1BD552822C95A92B8B23BBE6555326997919AF1DB1144870CB4B4",
+    },
 }
 
 

@@ -74,3 +74,15 @@ data/processed/*
 !data/processed/shapingba_walk_accessibility_metadata.json
 !data/processed/shapingba_walk_accessibility_mvp.gpkg
 !data/processed/official_project_status_evidence.csv
+!data/processed/shapingba_residential_accessibility.csv
+!data/processed/shapingba_residential_accessibility_sensitivity.csv
+!data/processed/shapingba_residential_accessibility.gpkg
+!data/processed/shapingba_poor_accessibility_areas.csv
+!data/processed/shapingba_walk_network_connectivity.csv
+!data/processed/shapingba_improvement_candidates.csv
+!data/processed/shapingba_improvement_simulation.csv
+!data/processed/shapingba_improvement_simulation_sensitivity.csv
+!data/processed/shapingba_improvement_simulation.gpkg
+!data/processed/shapingba_official_independent_comparison.csv
+!data/processed/shapingba_official_plan_evidence.csv
+!data/processed/shapingba_official_independent_comparison.gpkg

@@ -1,0 +1,13 @@
+﻿scenario,assumption_value,threshold_min,named_residential_areas,over_threshold_count,over_threshold_share_pct,potentially_shifted_under_15_min
+walk_speed_3.6_kmh,3.6,10,31,28,90.32258064516128,
+walk_speed_3.6_kmh,3.6,15,31,22,70.96774193548387,
+walk_speed_3.6_kmh,3.6,20,31,20,64.51612903225806,
+walk_speed_4.5_kmh,4.5,10,31,26,83.87096774193549,
+walk_speed_4.5_kmh,4.5,15,31,20,64.51612903225806,
+walk_speed_4.5_kmh,4.5,20,31,8,25.806451612903224,
+walk_speed_5.4_kmh,5.4,10,31,22,70.96774193548387,
+walk_speed_5.4_kmh,5.4,15,31,17,54.83870967741935,
+walk_speed_5.4_kmh,5.4,20,31,5,16.129032258064516,
+directness_cap_1.15,1.15,15,31,13,41.935483870967744,7.0
+directness_cap_1.25,1.25,15,31,14,45.16129032258065,6.0
+directness_cap_1.40,1.4,15,31,15,48.38709677419355,5.0

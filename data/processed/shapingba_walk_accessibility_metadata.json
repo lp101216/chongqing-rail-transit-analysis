@@ -1,6 +1,6 @@
 {
   "analysis_name": "Shapingba-Gaomiaocun walking accessibility MVP",
-  "generated_at": "2026-10-10T16:54:08.170377+08:00",
+  "generated_at": "2026-10-14T22:20:41.848312+08:00",
   "input_pbf": "work/data_source_survey/chongqing_osm_2026-10-10.osm.pbf",
   "osm_snapshot_date": "2026-10-09",
   "official_operating_network_date": "2024-12",
@@ -27,7 +27,7 @@
     "No slope or elevation penalty",
     "No station interior, gate, platform, or waiting time",
     "Mapped station entrances may be incomplete",
-    "Reachable edges require both endpoints within cutoff",
+    "Threshold-crossing edges are clipped using endpoint network distances",
     "OSM completeness and access tags may be imperfect",
     "Corridor polygon is a cartographic road buffer, not population coverage"
   ]

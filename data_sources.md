@@ -22,10 +22,22 @@
 - 许可：https://www.openstreetmap.org/copyright （ODbL）。
 - 快照日期：2026-10-09；下载日期：2026-10-10。
 - 格式：OSM PBF。
-- 用途：提取测试区站点坐标和步行道路，构建 NetworkX 无向加权图。
+- 用途：提取测试区站点坐标、出入口、步行道路和具名住宅土地利用面，构建 NetworkX 无向加权图并筛查住宅区到站路线。
 - 可公开使用：可以，但地图与派生数据必须署名 `© OpenStreetMap contributors`，派生数据库再分发需遵守 ODbL。
-- 质量限制：社区维护数据可能缺路、误连或更新不同步；MVP 未处理坡度、站内通道和道路高程。
+- 质量限制：社区维护数据可能缺路、误连、缺住宅区边界或更新不同步；模型未处理坡度、站内通道和道路高程。具名住宅面不是人口或户数数据。
+- 改善模拟：本轮没有新增外部数据。假设连接完全由同一快照的现有路径节点派生，连接线不是OSM设施，也没有独立许可或现实存在性含义。
 - 本地文件：`work/data_source_survey/chongqing_osm_2026-10-10.osm.pbf`，不提交 Git。
+
+### 重庆市“十五五”现代综合交通运输体系和物流发展规划（2026—2030年）
+
+- 发布机构：重庆市人民政府；公开页面由重庆市交通运输委员会发布。
+- 官方页面：https://jtysw.cq.gov.cn/zwgk_240/zfxxgkml/zcwj/qtwj/202608/t20260820_15956773.html
+- 文件日期：2026-07-29；页面发布日期：2026-08-20；下载核验日期：2026-10-14。
+- 用途：核验轨道—公交—步行—非机动车接驳、出入口开放和住宅小区直连政策，并记录公交轨道50米接驳率84%→87%的规划目标。
+- 使用限制：可引用；页面未给出允许将整份PDF在GitHub再分发的开放许可，原件仅保存在Git忽略目录。
+- 质量限制：全市政策没有点名高庙村3个案例住宅区，也没有案例级项目几何、成本或人口，不能直接计算本地节时。
+- 本地文件：`work/data_source_survey/chongqing_transport_plan_2026-2030.pdf`，789,122 bytes，不提交 Git。
+- SHA-256：`963B83B6FEF1BD552822C95A92B8B23BBE6555326997919AF1DB1144870CB4B4`。
 
 ## 状态定义
 
@@ -43,6 +55,7 @@
 | OSM-001 | OpenStreetMap重庆提取包 | OpenStreetMap contributors / Geofabrik | 已下载 | 第三方开放数据 | https://download.geofabrik.de/asia/china/chongqing.html | 快照2026-10-09 | 2026-10-10 | OSM PBF | 快照时点 | 重庆市；WGS84 | ODbL，须署名及遵守派生数据库条款 | MVP站点坐标和步行道路 | `work/data_source_survey/chongqing_osm_2026-10-10.osm.pbf` | `01016D53B156CCA02C5E837574648BAB358D40E766514BB90697B31E087BC354` | 社区数据；已做小范围字段、拓扑和站点抽查 |
 | STAT-001 | 《重庆统计年鉴 2025》 | 重庆市统计局、国家统计局重庆调查总队 | 已下载 | 官方 | https://tjj.cq.gov.cn/zwgk_233/tjnj/index.html | 2025版，主要统计到2024 | 2026-10-10 | PDF | 1996—2024等，按表不同 | 重庆市及区县 | 可引用；未确认整本再分发许可 | 数据资源调查，尚未进入MVP | `work/data_source_survey/chongqing_statistical_yearbook_2025.pdf` | `6C7219649073ED7106F654F8B26AFC6205AD94C6DCD06276A3075B5F8EBDA2BD` | 已核验表3-3、8-6、20-1续表3；未发布人口覆盖结果 |
 | PLAN-001 | 《重庆市国土空间总体规划（2021—2035年）（公开版）》 | 重庆市人民政府 / 重庆市规划和自然资源局 | 已下载 | 官方 | https://ghzrzyj.cq.gov.cn/ztlm_186/ghgb/ztgh/202406/t20240617_13297790_wap.html | 文件封面2024-03 | 2026-10-10 | PDF | 2021—2035 | 重庆市全域；公开图件非分析矢量 | 可引用；未确认整本再分发许可 | 官方规划证据准备 | `work/data_source_survey/chongqing_territorial_spatial_plan_2021-2035.pdf` | `C538F40EB78DAF0AD1096F410A42728EF03309461968A67B81A0A3DA1E75405F` | 不把规划图数字化为精确工程线位 |
+| PLAN-002 | 《重庆市“十五五”现代综合交通运输体系和物流发展规划（2026—2030年）》 | 重庆市人民政府 | 已下载 | 官方 | https://jtysw.cq.gov.cn/zwgk_240/zfxxgkml/zcwj/qtwj/202608/t20260820_15956773.html | 文件2026-07-29 / 发布2026-08-20 | 2026-10-14 | PDF | 2026—2030 | 重庆市全域；无案例工程矢量 | 可引用；未确认整份再分发许可 | 官方接驳政策与独立方案比较 | `work/data_source_survey/chongqing_transport_plan_2026-2030.pdf` | `963B83B6FEF1BD552822C95A92B8B23BBE6555326997919AF1DB1144870CB4B4` | 核验政策方向与84%→87%目标；不推算案例节时 |
 
 ## 官方规划与项目状态网页
 
@@ -51,6 +64,8 @@
 - `policy_comparison.md`；
 - `data/processed/official_project_status_evidence.csv`；
 - `reports/data_source_investigation_report.md`。
+- `data/processed/shapingba_official_plan_evidence.csv`；
+- `reports/official_plan_comparison_case_study.md`。
 
 这些网页材料用于区分规划、获批、在建和已运营，不是空间可达性模型输入。第五期前期研究没有被描述为已批准项目。
 

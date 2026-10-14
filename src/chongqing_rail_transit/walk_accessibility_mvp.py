@@ -23,7 +23,8 @@ import networkx as nx
 import numpy as np
 import pandas as pd
 import pyogrio
-from shapely.geometry import LineString, Point
+from shapely.geometry import LineString, MultiLineString, Point
+from shapely.ops import substring
 
 
 ANALYSIS_CRS = "EPSG:32648"
@@ -234,16 +235,7 @@ def reachable_edge_frame(
     distances = nx.single_source_dijkstra_path_length(
         graph, source, cutoff=cutoff_m, weight="length_m"
     )
-    reachable_nodes = set(distances)
-    records = [
-        {
-            "u": str(u), "v": str(v), "osm_id": data["osm_id"],
-            "highway": data["highway"], "length_m": data["length_m"],
-            "geometry": data["geometry"],
-        }
-        for u, v, data in graph.edges(data=True)
-        if u in reachable_nodes and v in reachable_nodes
-    ]
+    records = _reachable_edge_records(graph, distances, cutoff_m)
     return gpd.GeoDataFrame(records, geometry="geometry", crs=crs), distances
 
 
@@ -257,17 +249,60 @@ def reachable_edge_frame_multi(
     distances = nx.multi_source_dijkstra_path_length(
         graph, sources, cutoff=cutoff_m, weight="length_m"
     )
-    reachable_nodes = set(distances)
-    records = [
-        {
-            "u": str(u), "v": str(v), "osm_id": data["osm_id"],
-            "highway": data["highway"], "length_m": data["length_m"],
-            "geometry": data["geometry"],
-        }
-        for u, v, data in graph.edges(data=True)
-        if u in reachable_nodes and v in reachable_nodes
-    ]
+    records = _reachable_edge_records(graph, distances, cutoff_m)
     return gpd.GeoDataFrame(records, geometry="geometry", crs=crs), distances
+
+
+def _oriented_edge_geometry(
+    geometry: LineString, u: tuple[float, float]
+) -> LineString:
+    """Orient an edge geometry so its first coordinate is graph node ``u``."""
+    start = geometry.coords[0]
+    end = geometry.coords[-1]
+    if Point(start).distance(Point(u)) <= Point(end).distance(Point(u)):
+        return geometry
+    return LineString(list(geometry.coords)[::-1])
+
+
+def _reachable_edge_records(
+    graph: nx.Graph,
+    distances: dict[tuple[float, float], float],
+    cutoff_m: float,
+) -> list[dict[str, object]]:
+    """Clip every edge to the portion reachable from either endpoint.
+
+    Dijkstra distances are known at nodes.  For an edge crossing the cutoff,
+    the reachable prefix/suffix is retained instead of dropping the entire
+    edge.  This removes the MVP's threshold-boundary undercount.
+    """
+    records: list[dict[str, object]] = []
+    for u, v, data in graph.edges(data=True):
+        original_length = float(data["length_m"])
+        from_u = max(0.0, cutoff_m - distances[u]) if u in distances else 0.0
+        from_v = max(0.0, cutoff_m - distances[v]) if v in distances else 0.0
+        from_u = min(from_u, original_length)
+        from_v = min(from_v, original_length)
+        if from_u <= 1e-9 and from_v <= 1e-9:
+            continue
+
+        geometry = _oriented_edge_geometry(data["geometry"], u)
+        if from_u + from_v >= original_length - 1e-9:
+            clipped = geometry
+        else:
+            parts = []
+            if from_u > 1e-9:
+                parts.append(substring(geometry, 0, from_u))
+            if from_v > 1e-9:
+                parts.append(substring(geometry, original_length - from_v, original_length))
+            clipped = parts[0] if len(parts) == 1 else MultiLineString(parts)
+
+        reachable_length = float(clipped.length)
+        records.append({
+            "u": str(u), "v": str(v), "osm_id": data["osm_id"],
+            "highway": data["highway"], "length_m": reachable_length,
+            "original_length_m": original_length, "geometry": clipped,
+        })
+    return records
 
 
 def graph_edges_frame(graph: nx.Graph) -> gpd.GeoDataFrame:
@@ -457,7 +492,7 @@ def write_metadata(
             "No slope or elevation penalty",
             "No station interior, gate, platform, or waiting time",
             "Mapped station entrances may be incomplete",
-            "Reachable edges require both endpoints within cutoff",
+            "Threshold-crossing edges are clipped using endpoint network distances",
             "OSM completeness and access tags may be imperfect",
             "Corridor polygon is a cartographic road buffer, not population coverage",
         ],

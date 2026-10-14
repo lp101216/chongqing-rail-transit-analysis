@@ -1,0 +1,2 @@
+﻿network_nodes,network_edges,connected_components,largest_component_nodes,largest_component_node_share_pct,station_entrance_components,residential_origins_total,residential_origins_routed,origins_disconnected_from_station_component,origins_over_150m_snap
+6916,7456,13,6506,94.07171775592828,1,33,31,0,2
