@@ -2,12 +2,18 @@
 
 ## OpenStreetMap 派生数据
 
-本仓库中的以下成果由 OpenStreetMap 数据生成：
+本仓库中的空间分析成果由 OpenStreetMap 数据生成，包括但不限于：
 
 - `data/processed/shapingba_walk_accessibility_mvp.gpkg`
 - `data/processed/shapingba_accessibility_summary.csv`
 - `data/processed/shapingba_walk_accessibility_metadata.json`
 - `reports/figures/shapingba_walk_accessibility_mvp.png`
+- `data/processed/shapingba_residential_accessibility.gpkg`
+- `data/processed/shapingba_slope_adjusted_improvement.gpkg`
+- `data/processed/shapingba_bus_rail_feeder_screen.gpkg`
+- `data/processed/shapingba_bus_platform_rail_access.csv`
+- `data/processed/shapingba_residential_bus_feeder_screen.csv`
+- `reports/figures/shapingba_bus_rail_feeder_screen.png`
 
 数据署名：**© OpenStreetMap contributors**。
 

@@ -1,0 +1,10 @@
+﻿rail_transfer_walk_threshold_m,residential_bus_walk_threshold_m,poor_residential_count,bus_platform_over_threshold_count,spatial_direct_feeder_candidate_count,nearby_platform_no_mapped_direct_route_count
+200.0,300.0,21,16,4,1
+200.0,375.0,21,14,5,2
+200.0,500.0,21,11,7,3
+300.0,300.0,21,16,4,1
+300.0,375.0,21,14,5,2
+300.0,500.0,21,11,7,3
+500.0,300.0,21,16,4,1
+500.0,375.0,21,14,5,2
+500.0,500.0,21,11,7,3

@@ -48,6 +48,8 @@ data/external/*
 !data/external/.gitkeep
 data/interim/*
 !data/interim/.gitkeep
+data/field/*
+!data/field/field_walk_observations_template.csv
 data/processed/*
 !data/processed/.gitkeep
 
@@ -92,3 +94,8 @@ data/processed/*
 !data/processed/shapingba_slope_edge_quality.csv
 !data/processed/shapingba_slope_cap_sensitivity_summary.csv
 !data/processed/shapingba_slope_cap_sensitivity_cases.csv
+!data/processed/shapingba_bus_platform_rail_access.csv
+!data/processed/shapingba_bus_rail_station_summary.csv
+!data/processed/shapingba_residential_bus_feeder_screen.csv
+!data/processed/shapingba_bus_feeder_threshold_sensitivity.csv
+!data/processed/shapingba_bus_rail_feeder_screen.gpkg

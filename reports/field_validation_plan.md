@@ -108,7 +108,7 @@ MAE=\frac{1}{n}\sum_{i=1}^{n}|e_i|.
 - 若主要误差来自入口和道路拓扑，优先修正OSM网络及起终点，而不是校正Tobler参数。
 - 只有在至少包含多条上坡、下坡和楼梯的实测样本后，才拟合重庆本地坡度参数。
 
-## 8. 数据整理模板
+## 8. 数据整理模板与分析程序
 
 建议现场数据保存为`data/field/field_walk_observations.csv`，但在提交GitHub前应移除人脸、设备账号、家庭地址等个人信息。最低字段为：
 
@@ -119,3 +119,19 @@ crossing_wait_min,stairs_present,weather,route_blocked,notes
 ```
 
 GPX原文件可能包含出发前后的私人位置。公开前只保留研究路线段，并再次检查元数据和隐私。
+
+仓库提供统一的16行空白采集表（8条路线×2次重复）：
+
+- `data/field/field_walk_observations_template.csv`
+
+表内固定模型和坡度模型预测值来自已发布结果；日期、坐标、GPX文件和实测时间字段保持为空，不构成现场验证结果。复制该表为Git忽略的`data/field/field_walk_observations.csv`后填写。
+
+分析程序支持GPX轨迹距离、轨迹历时和高程变化摘要，并分别以总历时、移动历时计算固定模型与坡度模型的MAE、中位绝对误差、平均有符号误差和胜出记录数：
+
+```powershell
+python -m chongqing_rail_transit.field_validation `
+  --observations data/field/field_walk_observations.csv `
+  --gpx-dir data/field/gpx
+```
+
+只有存在正的`observed_total_time_min`时才生成`outputs/field_validation/`下的验证结果；空表不会产生虚假指标。GPX累计爬升容易受手机高程噪声影响，只用于诊断，不直接替代SRTM或工程测量。
