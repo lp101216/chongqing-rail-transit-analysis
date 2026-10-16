@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import geopandas as gpd
 import networkx as nx
+import numpy as np
 import pandas as pd
 from shapely.geometry import LineString, Point
 
@@ -23,6 +24,11 @@ from chongqing_rail_transit.improvement_simulation import (
     select_path_shortcut,
 )
 from chongqing_rail_transit.official_plan_comparison import build_comparison_table
+from chongqing_rail_transit.slope_accessibility import (
+    HgtTile,
+    _route_to_station,
+    tobler_speed_kmh,
+)
 
 
 def test_distance_cutoffs_match_mvp_assumption() -> None:
@@ -164,3 +170,58 @@ def test_official_comparison_does_not_invent_local_effects() -> None:
     assert independent["time_saved_min_4_5"] == 4.0
     assert pd.isna(official["time_saved_min_4_5"])
     assert not bool(official["direct_comparison_allowed"])
+
+
+def test_hgt_tile_bilinear_sampling_and_bounds() -> None:
+    tile = HgtTile(
+        elevations=np.array([[100.0, 200.0], [300.0, 400.0]]),
+        south=29.0, west=106.0, north=30.0, east=107.0,
+    )
+    assert tile.sample(106.0, 30.0) == 100.0
+    assert tile.sample(107.0, 29.0) == 400.0
+    assert tile.sample(106.5, 29.5) == 250.0
+
+
+def test_normalized_tobler_matches_level_speed_and_is_directional() -> None:
+    assert tobler_speed_kmh(0.0) == 4.5
+    assert tobler_speed_kmh(0.10) < 4.5
+    assert tobler_speed_kmh(-0.05) > 4.5
+    assert tobler_speed_kmh(0.20) < tobler_speed_kmh(-0.20)
+
+
+def test_zero_grade_scale_reproduces_constant_speed() -> None:
+    assert tobler_speed_kmh(0.30, grade_scale=0.0) == 4.5
+    assert tobler_speed_kmh(-0.30, grade_scale=0.0) == 4.5
+
+
+def test_grade_cap_is_applied_before_speed_calculation() -> None:
+    assert tobler_speed_kmh(1.0, maximum_abs_grade=0.35) == tobler_speed_kmh(
+        0.35, maximum_abs_grade=0.35
+    )
+    assert tobler_speed_kmh(1.0, maximum_abs_grade=0.50) < tobler_speed_kmh(
+        1.0, maximum_abs_grade=0.35
+    )
+
+
+def test_route_direction_is_residential_to_station() -> None:
+    graph = nx.DiGraph()
+    common = {
+        "length_m": 100.0,
+        "elevation_delta_m": 10.0,
+        "raw_grade": 0.10,
+        "grade_was_capped": False,
+    }
+    graph.add_edge((100.0, 0.0), (0.0, 0.0), time_min=5.0, **common)
+    graph.add_edge(
+        (0.0, 0.0), (100.0, 0.0), time_min=1.0,
+        **{**common, "elevation_delta_m": -10.0, "raw_grade": -0.10},
+    )
+    result = _route_to_station(
+        graph,
+        origin=(100.0, 0.0),
+        origin_snap_m=0.0,
+        source_metadata={(0.0, 0.0): ("测试站", 0.0)},
+    )
+    assert result["station_name"] == "测试站"
+    assert result["time_min"] == 5.0
+    assert result["path"] == [(100.0, 0.0), (0.0, 0.0)]

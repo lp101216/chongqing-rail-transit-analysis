@@ -39,6 +39,17 @@
 - 本地文件：`work/data_source_survey/chongqing_transport_plan_2026-2030.pdf`，789,122 bytes，不提交 Git。
 - SHA-256：`963B83B6FEF1BD552822C95A92B8B23BBE6555326997919AF1DB1144870CB4B4`。
 
+### Mapzen Terrain Tiles / SRTM N29E106
+
+- 数据说明：https://registry.opendata.aws/terrain-tiles/
+- 固定文件：https://s3.amazonaws.com/elevation-tiles-prod/skadi/N29/N29E106.hgt.gz
+- 下载日期：2026-10-15；文件大小：13,522,612 bytes。
+- 格式：HGT gzip，3,601×3,601像元，约1弧秒；覆盖北纬29—30度、东经106—107度。
+- 用途：对步行网络节点进行双线性高程插值，构建方向性坡度步行时间。
+- 许可与署名：Mapzen说明该区域使用的SRTM为公共领域数据；发布成果按其要求标注`SRTM data courtesy of the U.S. Geological Survey`并注明Mapzen Terrain Tiles来源。原HGT不提交Git。
+- SHA-256：`968AB4EBD001029116FB3BA2326CD6D41A456B3556A41E2E6ACE744EAC408439`。
+- 质量限制：约30米网格不能表达楼梯、挡墙、室内通道和道路微地形；端点坡度不是实测道路纵坡。
+
 ## 状态定义
 
 - `候选`：已发现，但尚未完成核验。
@@ -56,6 +67,7 @@
 | STAT-001 | 《重庆统计年鉴 2025》 | 重庆市统计局、国家统计局重庆调查总队 | 已下载 | 官方 | https://tjj.cq.gov.cn/zwgk_233/tjnj/index.html | 2025版，主要统计到2024 | 2026-10-10 | PDF | 1996—2024等，按表不同 | 重庆市及区县 | 可引用；未确认整本再分发许可 | 数据资源调查，尚未进入MVP | `work/data_source_survey/chongqing_statistical_yearbook_2025.pdf` | `6C7219649073ED7106F654F8B26AFC6205AD94C6DCD06276A3075B5F8EBDA2BD` | 已核验表3-3、8-6、20-1续表3；未发布人口覆盖结果 |
 | PLAN-001 | 《重庆市国土空间总体规划（2021—2035年）（公开版）》 | 重庆市人民政府 / 重庆市规划和自然资源局 | 已下载 | 官方 | https://ghzrzyj.cq.gov.cn/ztlm_186/ghgb/ztgh/202406/t20240617_13297790_wap.html | 文件封面2024-03 | 2026-10-10 | PDF | 2021—2035 | 重庆市全域；公开图件非分析矢量 | 可引用；未确认整本再分发许可 | 官方规划证据准备 | `work/data_source_survey/chongqing_territorial_spatial_plan_2021-2035.pdf` | `C538F40EB78DAF0AD1096F410A42728EF03309461968A67B81A0A3DA1E75405F` | 不把规划图数字化为精确工程线位 |
 | PLAN-002 | 《重庆市“十五五”现代综合交通运输体系和物流发展规划（2026—2030年）》 | 重庆市人民政府 | 已下载 | 官方 | https://jtysw.cq.gov.cn/zwgk_240/zfxxgkml/zcwj/qtwj/202608/t20260820_15956773.html | 文件2026-07-29 / 发布2026-08-20 | 2026-10-14 | PDF | 2026—2030 | 重庆市全域；无案例工程矢量 | 可引用；未确认整份再分发许可 | 官方接驳政策与独立方案比较 | `work/data_source_survey/chongqing_transport_plan_2026-2030.pdf` | `963B83B6FEF1BD552822C95A92B8B23BBE6555326997919AF1DB1144870CB4B4` | 核验政策方向与84%→87%目标；不推算案例节时 |
+| DEM-001 | Terrain Tiles SRTM N29E106 | Mapzen / USGS | 已下载 | 第三方开放数据 | https://registry.opendata.aws/terrain-tiles/ | 页面持续维护；SRTM约2000年获取 | 2026-10-15 | HGT gzip | 地形高程 | N29—30、E106—107；WGS84网格 | SRTM公共领域；需保留USGS与Mapzen来源说明 | 道路节点高程与方向性坡度时间 | `work/data_source_survey/N29E106.hgt.gz` | `968AB4EBD001029116FB3BA2326CD6D41A456B3556A41E2E6ACE744EAC408439` | 3,601×3,601；不提交原始13.5 MB文件 |
 
 ## 官方规划与项目状态网页
 

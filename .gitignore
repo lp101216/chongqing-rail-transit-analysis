@@ -86,3 +86,9 @@ data/processed/*
 !data/processed/shapingba_official_independent_comparison.csv
 !data/processed/shapingba_official_plan_evidence.csv
 !data/processed/shapingba_official_independent_comparison.gpkg
+!data/processed/shapingba_slope_adjusted_residential.csv
+!data/processed/shapingba_slope_adjusted_improvement.csv
+!data/processed/shapingba_slope_adjusted_improvement.gpkg
+!data/processed/shapingba_slope_edge_quality.csv
+!data/processed/shapingba_slope_cap_sensitivity_summary.csv
+!data/processed/shapingba_slope_cap_sensitivity_cases.csv

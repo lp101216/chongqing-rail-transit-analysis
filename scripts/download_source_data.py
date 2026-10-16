@@ -41,6 +41,11 @@ DATASETS = {
         ),
         "sha256": "963B83B6FEF1BD552822C95A92B8B23BBE6555326997919AF1DB1144870CB4B4",
     },
+    "srtm_n29e106": {
+        "filename": "N29E106.hgt.gz",
+        "url": "https://s3.amazonaws.com/elevation-tiles-prod/skadi/N29/N29E106.hgt.gz",
+        "sha256": "968AB4EBD001029116FB3BA2326CD6D41A456B3556A41E2E6ACE744EAC408439",
+    },
 }
 
 
