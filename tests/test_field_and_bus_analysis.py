@@ -226,4 +226,6 @@ def test_route_stop_audit_preserves_false_positive_correction() -> None:
     assert (audit["alighting_stop_sequence"] - audit["boarding_stop_sequence"]).eq(
         audit["stop_hops"]
     ).all()
+    assert audit["verification_method"].str.startswith("manual_osm_relation").all()
+    assert audit["automatic_relation_member_validation"].eq(False).all()
     assert audit["operation_verification"].str.contains("not_operator_confirmation").all()

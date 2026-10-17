@@ -270,6 +270,8 @@ def route_stop_audit_table() -> pd.DataFrame:
         "stop_hops": c.stop_hops,
         "audit_result": c.audit_result,
         "audit_note": c.audit_note,
+        "verification_method": "manual_osm_relation_member_and_sequence_audit_recorded_as_constants",
+        "automatic_relation_member_validation": False,
         "operation_verification": "route_geometry_and_direction_only_not_operator_confirmation",
     } for c in CANDIDATES])
 

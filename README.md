@@ -4,6 +4,16 @@
 
 **English overview:** A reproducible, open-data study of walking accessibility around Chongqing Rail Transit stations. The current MVP models four operational stations in the Shapingba–Gaomiaocun corridor using an OpenStreetMap walking network. It does not claim population coverage or citywide conclusions.
 
+## 三分钟项目概览
+
+| 招聘者最关心的问题 | 本项目的回答 |
+| --- | --- |
+| 研究问题 | 重庆山地城市中，住宅区到轨道出入口的道路绕行和坡度是否造成明显步行不便，局部步行连接或公交接驳是否值得进一步核验？ |
+| 数据与方法 | 固定OSM快照、SRTM高程和政府公开规划；使用GeoPandas、Shapely、PyProj、NetworkX、Pandas和Matplotlib构建方向性最短路、情景模拟与敏感性分析。 |
+| 核心证据 | 31个有效具名住宅样本中，固定速度模型20个超过15分钟；坡度模型为21个。三个假设连接和五个公交候选均输出可复现CSV、GeoPackage、地图及证据限制。 |
+| 最重要边界 | 样本没有人口权重；坡度未经本地实测校准；公交缺少可靠班距和车内时间；模拟连接不是已建或已证实可建工程。 |
+| 快速入口 | [核心地图](reports/figures/shapingba_slope_model_comparison.png) · [公交时间案例](reports/bus_feeder_time_report.md) · [完整验证](validation_report.md) · [研究质量审查](reports/portfolio_research_quality_review.md) |
+
 ## 项目研究目标
 
 重庆具有山地、河谷、桥隧和立体街道等复杂空间特征。以车站为中心画直线缓冲区，容易把无法直接穿越的坡地、封闭地块或立体道路误判为可达。本项目希望逐步建立基于真实道路网络的轨道站点步行可达性模型，并在数据充分后研究人口覆盖、服务差异和官方规划情景。
@@ -68,7 +78,7 @@ Tobler函数已归一化至平地4.5 km/h。坡度时间仍是模型预测，不
 
 ### 公交方向核验与时间盈亏平衡
 
-进一步检查OSM具体方向关系中的站台成员和顺序后，5个空间候选中只有凤天花园、卓越·美丽山水的初筛站台直接通过；凯莱阳光需改用路线成员中的同名站台；升伟·新时空和周李小区的“凤天大道北段”不是209路关系成员，原结果是路线几何近邻造成的假阳性，替代上车站为西南医院。
+人工检查OSM具体方向关系页面中的站台成员和顺序后，5个空间候选中只有凤天花园、卓越·美丽山水的初筛站台直接通过；凯莱阳光需改用路线成员中的同名站台；升伟·新时空和周李小区的“凤天大道北段”不是209路关系成员，原结果是路线几何近邻造成的假阳性，替代上车站为西南医院。核验结果以关系ID、节点ID和序号固化在CSV及代码常量中；当前程序不会从PBF自动重建关系成员序列。
 
 | 住宅区 | 线路 | 修正上车站 | 下车站/轨道站 | 住宅→公交站步行（固定/坡度） | 候车+车内上限（固定/坡度） | 调查顺序 |
 |---|---:|---|---|---:|---:|---:|
@@ -134,6 +144,7 @@ Tobler函数已归一化至平地4.5 km/h。坡度时间仍是模型预测，不
 - [`reports/field_validation_plan.md`](reports/field_validation_plan.md)：下一阶段8条路线的低成本现场验证方案；
 - [`reports/bus_feeder_accessibility_report.md`](reports/bus_feeder_accessibility_report.md)：公交站台、轨道换乘距离和住宅区空间接驳筛查；
 - [`reports/bus_feeder_time_report.md`](reports/bus_feeder_time_report.md)：5个公交候选的方向站台核验、盈亏平衡时间与班距敏感性；
+- [`reports/portfolio_research_quality_review.md`](reports/portfolio_research_quality_review.md)：求职展示、跨文件一致性和研究证据边界审查；
 - [`reports/improvement_case_study.md`](reports/improvement_case_study.md)：3个假设步行连接的前后效果与敏感性；
 - [`reports/residential_accessibility_report.md`](reports/residential_accessibility_report.md)：33个具名住宅区的筛查、差区域和质量检查；
 - [`validation_report.md`](validation_report.md)：自动化测试和真实数据集成验证。
@@ -292,12 +303,13 @@ python -m pytest -q
 - [`reports/slope_accessibility_report.md`](reports/slope_accessibility_report.md)：方向性坡度模型与结果；
 - [`reports/field_validation_plan.md`](reports/field_validation_plan.md)：现场路线、采集字段和MAE评价方案；
 - [`reports/bus_feeder_accessibility_report.md`](reports/bus_feeder_accessibility_report.md)：公交站台布局、候选线路和数据边界；
+- [`reports/portfolio_research_quality_review.md`](reports/portfolio_research_quality_review.md)：求职展示与研究质量审查；
 - [`policy_comparison.md`](policy_comparison.md)：官方规划证据、项目状态与独立方案比较边界；
 - [`delivery_check_report.md`](delivery_check_report.md)：公开发布前检查报告。
 
 ## 已知局限
 
-当前坡度模型使用约30米SRTM和未经重庆本地校准的Tobler函数，不能识别楼梯、挡墙、室内高差和垂直交通。公交筛查只有OSM站台和路线几何，没有班次、等待、车内时间、可靠性和客流。OSM出入口、小路、公交站台及路线也可能缺失。因此结果只能表述为指定假设下的空间筛查，不能表述为人口覆盖、实测时间、公交服务便捷或投资优先级。
+当前坡度模型使用约30米SRTM和未经重庆本地校准的Tobler函数，不能识别楼梯、挡墙、室内高差和垂直交通。公交研究虽已人工核验5个案例的OSM方向关系、成员站台和站序，但没有运营方班次、等待、车内时间、可靠性和客流；人工核验也未由程序从PBF自动重建。OSM出入口、小路、公交站台及路线仍可能缺失。因此结果只能表述为指定假设下的空间筛查和盈亏平衡条件，不能表述为人口覆盖、实测时间、公交服务便捷或投资优先级。
 
 详见 [`limitations.md`](limitations.md)。
 
