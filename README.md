@@ -12,7 +12,7 @@
 
 ## 已经回答的实际交通问题
 
-本阶段回答了：**沙坪坝—高庙村走廊中，哪些具名住宅区到轨道站步行不便；单一短步行连接能改善多少；公交站台的空间布局是否可能补充部分步行不足；这些独立方案与重庆官方规划是什么关系。**
+本阶段回答了：**沙坪坝—高庙村走廊中，哪些具名住宅区到轨道站步行不便；单一短步行连接能改善多少；公交站台的空间布局是否可能补充部分步行不足；5个公交候选在核验方向和实际停靠站后还剩多少节时空间；这些独立方案与重庆官方规划是什么关系。**
 
 - 33个OSM具名住宅区中，31个通过道路吸附质量门槛；按4.5 km/h，20个模型路线超过15分钟、8个超过20分钟。样本等权，**不是人口比例**。
 - 3个高庙村站周边候选住宅区完成了显式网络改造情景；每处只增加一条20—250米的假设连接。
@@ -66,6 +66,24 @@ Tobler函数已归一化至平地4.5 km/h。坡度时间仍是模型预测，不
 
 “空间直达候选”只表示站台与路线几何具备进一步核验价值。数据不含班次、等待、车内时间、可靠性和客流，因此不能写成“公交接驳便捷”或总时间节省。完整结果见[`reports/bus_feeder_accessibility_report.md`](reports/bus_feeder_accessibility_report.md)。
 
+### 公交方向核验与时间盈亏平衡
+
+进一步检查OSM具体方向关系中的站台成员和顺序后，5个空间候选中只有凤天花园、卓越·美丽山水的初筛站台直接通过；凯莱阳光需改用路线成员中的同名站台；升伟·新时空和周李小区的“凤天大道北段”不是209路关系成员，原结果是路线几何近邻造成的假阳性，替代上车站为西南医院。
+
+| 住宅区 | 线路 | 修正上车站 | 下车站/轨道站 | 住宅→公交站步行（固定/坡度） | 候车+车内上限（固定/坡度） | 调查顺序 |
+|---|---:|---|---|---:|---:|---:|
+| 凤天花园 | 1429 | 凤天大道 | 高庙村西 / 高庙村 | 1.55 / 1.76分钟 | 17.48 / 21.33分钟 | 1 |
+| 卓越·美丽山水 | 210 | 羊角堡 | 小龙坎立交 / 小龙坎 | 2.45 / 2.83分钟 | 21.06 / 23.53分钟 | 2 |
+| 凯莱阳光 | 209 | 美茵河谷（修正） | 陈家湾 / 沙坪坝 | 3.73 / 4.19分钟 | 11.11 / 9.69分钟 | 3 |
+| 升伟·新时空 | 209 | 西南医院（替代） | 陈家湾 / 沙坪坝 | 8.33 / 9.19分钟 | 6.63 / 8.20分钟 | 4 |
+| 周李小区 | 209 | 西南医院（替代） | 陈家湾 / 沙坪坝 | 9.26 / 9.97分钟 | 3.93 / 5.50分钟 | 5 |
+
+上限等于“直接步行时间减去两段接驳步行时间”，不是实际公交用时。固定速度与坡度比较分别使用相同模型口径的两端步行，坡度路线按住宅→上车站及下车站→轨道入口的方向计算。项目尚未取得可靠的分时段班距和区间车内时间，所以实际总时间列保持为空；敏感性分析只使用5—30分钟班距参数。调查顺序只表示数据核验次序，不代表已经证明某条线路更快。
+
+![公交方向核验与时间盈亏平衡](reports/figures/shapingba_bus_feeder_time_candidates.png)
+
+完整分析见 [`reports/bus_feeder_time_report.md`](reports/bus_feeder_time_report.md)。
+
 ## 最重要的研究结论
 
 1. 坡度校正使超过20分钟的住宅区由8个增至16个；这说明地形假设会显著改变严重超时识别，但哪种模型更接近现实仍需现场时间验证。
@@ -73,7 +91,8 @@ Tobler函数已归一化至平地4.5 km/h。坡度时间仍是模型预测，不
 3. 奇峰自由湾的坡度情景仅节省0.4分钟；除非现场发现OSM漏路或真实大门不同，单一连接不应列为优先方案。
 4. 三处在坡度基准情景下仍超过15分钟。模型支持“优先实地核验”，不支持直接推荐施工、声称人口收益或经济回报。
 5. 坡度强度敏感性没有改变三个方案的总体排序，但绝对时间变化明显；高程模型不能替代工程测量。
-6. 公交站台空间筛查将凤天花园、卓越·美丽山水、凯莱阳光、升伟·新时空和周李小区列为候选线路现场核验对象；该名单不是运营服务排名。
+6. 方向关系核验排除了升伟·新时空、周李小区原上车站的209路匹配，并修正了凯莱阳光的同名站台；公交路线几何邻近不能代替实际停靠验证。
+7. 在没有真实班距和区间车内时间时，只能判断节时的必要条件：凤天花园和卓越·美丽山水分别允许17.48和21.06分钟的“候车+车内时间”（固定步速基准），最值得优先现场验证；坡度同口径结果分别为21.33和23.53分钟。
 
 ## 与官方规划的比较
 
@@ -114,13 +133,14 @@ Tobler函数已归一化至平地4.5 km/h。坡度时间仍是模型预测，不
 - [`reports/slope_accessibility_report.md`](reports/slope_accessibility_report.md)：SRTM高程、方向性坡度时间和三个案例复算；
 - [`reports/field_validation_plan.md`](reports/field_validation_plan.md)：下一阶段8条路线的低成本现场验证方案；
 - [`reports/bus_feeder_accessibility_report.md`](reports/bus_feeder_accessibility_report.md)：公交站台、轨道换乘距离和住宅区空间接驳筛查；
+- [`reports/bus_feeder_time_report.md`](reports/bus_feeder_time_report.md)：5个公交候选的方向站台核验、盈亏平衡时间与班距敏感性；
 - [`reports/improvement_case_study.md`](reports/improvement_case_study.md)：3个假设步行连接的前后效果与敏感性；
 - [`reports/residential_accessibility_report.md`](reports/residential_accessibility_report.md)：33个具名住宅区的筛查、差区域和质量检查；
 - [`validation_report.md`](validation_report.md)：自动化测试和真实数据集成验证。
 
 ## 研究范围与完成状态
 
-已完成4个已运营站、12个OSM出入口、7,456条道路图边、33个具名住宅区、3个改善情景、SRTM方向性坡度时间、144个公交站台的空间接驳筛查以及官方规划分层比较。尚未完成全重庆分析、人口/岗位/客流覆盖、本地步行时间校准、工程级设计和有真实班次数据的公交接驳时间模型。
+已完成4个已运营站、12个OSM出入口、7,456条道路图边、33个具名住宅区、3个改善情景、SRTM方向性坡度时间、144个公交站台的空间接驳筛查、5个公交候选的方向核验和时间盈亏平衡，以及官方规划分层比较。尚未完成全重庆分析、人口/岗位/客流覆盖、本地步行时间校准、工程级设计和有真实班次/车内时间数据的公交实际总时间模型。
 
 ## 数据来源
 
@@ -133,6 +153,7 @@ Tobler函数已归一化至平地4.5 km/h。坡度时间仍是模型预测，不
 | 《重庆市“十五五”综合交通运输发展规划》 | 官方接驳目标、政策方向与案例对照 | 2026—2030 | 市政府正式文件；仓库记录URL、日期和校验值，不镜像原件 |
 | Mapzen Terrain Tiles / SRTM | 道路节点高程与方向性坡度时间 | SRTM约2000年获取 | 公共领域；保留USGS与Mapzen来源说明，原HGT不提交 |
 | OpenStreetMap公交站台与路线关系 | 公交—轨道空间接驳筛查 | 快照2026-10-09 | ODbL；不含班次和服务质量 |
+| 政府公告及第三方公交线路页面 | 运营状态线索与施工风险核验 | 查询2026-10-17 | 仅保存来源、短事实摘要和可靠性；不镜像页面 |
 
 完整来源、URL、许可、下载日期和 SHA-256 见 [`data_sources.md`](data_sources.md)。原始文件下载脚本为 [`scripts/download_source_data.py`](scripts/download_source_data.py)，OSM 署名与 ODbL 说明见 [`NOTICE.md`](NOTICE.md)。
 
@@ -190,6 +211,9 @@ python -m chongqing_rail_transit.slope_accessibility `
   --hgt work/data_source_survey/N29E106.hgt.gz
 python -m chongqing_rail_transit.bus_feeder_accessibility `
   --pbf work/data_source_survey/chongqing_osm_2026-10-10.osm.pbf
+python -m chongqing_rail_transit.bus_feeder_time_analysis `
+  --pbf work/data_source_survey/chongqing_osm_2026-10-10.osm.pbf `
+  --hgt work/data_source_survey/N29E106.hgt.gz
 ```
 
 现场采集完成后，将空白模板复制为Git忽略的实测表并填写，再导入GPX和实测时间：
@@ -208,7 +232,7 @@ python -m chongqing_rail_transit.field_validation `
 python -m pytest -q
 ```
 
-预期结果为 `18 passed`。完整验证记录见 [`validation_report.md`](validation_report.md)。
+预期结果见 [`validation_report.md`](validation_report.md) 的最近一次记录。
 
 ## 主要输出
 
@@ -234,6 +258,12 @@ python -m pytest -q
 - [`data/processed/shapingba_bus_rail_station_summary.csv`](data/processed/shapingba_bus_rail_station_summary.csv)：4个轨道站的200/300/500米站台汇总；
 - [`data/processed/shapingba_residential_bus_feeder_screen.csv`](data/processed/shapingba_residential_bus_feeder_screen.csv)：住宅区到公交站台及候选线路筛查；
 - [`data/processed/shapingba_bus_feeder_threshold_sensitivity.csv`](data/processed/shapingba_bus_feeder_threshold_sensitivity.csv)：住宅端300/375/500米与轨道端200/300/500米阈值组合；
+- [`data/processed/shapingba_bus_feeder_route_verification.csv`](data/processed/shapingba_bus_feeder_route_verification.csv)：5个候选的方向关系、实际上下车站和假阳性修正；
+- [`data/processed/shapingba_bus_feeder_break_even.csv`](data/processed/shapingba_bus_feeder_break_even.csv)：直接步行、两段接驳步行及“候车+车内时间”盈亏平衡上限；
+- [`data/processed/shapingba_bus_feeder_wait_sensitivity.csv`](data/processed/shapingba_bus_feeder_wait_sensitivity.csv)：5—30分钟参数班距下的最大可容许车内时间；
+- [`data/processed/shapingba_bus_feeder_survey_priority.csv`](data/processed/shapingba_bus_feeder_survey_priority.csv)：五个案例的调查顺序、关键未知数据与理由（不是服务排名）；
+- [`data/processed/shapingba_bus_route_operation_evidence.csv`](data/processed/shapingba_bus_route_operation_evidence.csv)：运营信息来源、查询日期、可靠性和许可筛查；
+- `data/processed/shapingba_bus_feeder_time_candidates.gpkg`：候选住宅、方向有效站台、方向路线与目标轨道入口；
 - `data/processed/shapingba_bus_rail_feeder_screen.gpkg`：公交站台、轨道站、出入口、住宅点和到公交站台路线；
 - `data/processed/shapingba_official_independent_comparison.gpkg`：案例点、假设连接和OSM 27号线施工背景几何；
 - `data/processed/shapingba_improvement_simulation.gpkg`：改善前路线、模拟路线、连接和住宅点；
@@ -243,6 +273,7 @@ python -m pytest -q
 - [`reports/figures/shapingba_slope_adjusted_improvement.png`](reports/figures/shapingba_slope_adjusted_improvement.png)：三个案例的坡度基线路线与连接情景地图；
 - [`reports/figures/shapingba_slope_model_comparison.png`](reports/figures/shapingba_slope_model_comparison.png)：固定速度与坡度模型的结果对比图；
 - [`reports/figures/shapingba_bus_rail_feeder_screen.png`](reports/figures/shapingba_bus_rail_feeder_screen.png)：公交—轨道及住宅区空间接驳筛查；
+- [`reports/figures/shapingba_bus_feeder_time_candidates.png`](reports/figures/shapingba_bus_feeder_time_candidates.png)：方向有效线路/站台和时间盈亏平衡上限；
 - [`reports/figures/shapingba_walk_accessibility_mvp.png`](reports/figures/shapingba_walk_accessibility_mvp.png)：主要地图；
 - [`data/processed/official_project_status_evidence.csv`](data/processed/official_project_status_evidence.csv)：官方项目状态证据。
 

@@ -1,0 +1,6 @@
+﻿residential_name,route_ref,direction_relation_id,direction,boarding_platform_osm_id,boarding_platform_name,alighting_platform_osm_id,alighting_platform_name,rail_station,boarding_stop_sequence,alighting_stop_sequence,stop_hops,audit_result,audit_note,operation_verification
+凤天花园,1429,21469227,万科金色悦城三期 → 香榭街路口,12865714996,凤天大道,13121349537,高庙村西,高庙村,5,8,3,directional_stop_match,初筛站台属于所需方向关系。,route_geometry_and_direction_only_not_operator_confirmation
+卓越·美丽山水,210,21404246,菜园坝火车站 → 白公馆,14188353589,羊角堡,14188353569,小龙坎立交,小龙坎,10,12,2,directional_stop_match,初筛站台属于所需方向关系；菜园坝端施工可能影响现行运营。,route_geometry_and_direction_only_not_operator_confirmation
+凯莱阳光,209,21428493,兰美路立交南 → 井口工业园,14102490529,美茵河谷,8493314656,陈家湾,沙坪坝,1,14,13,corrected_platform,初筛站台不在关系成员中，改用同名、属于所需方向的站台。,route_geometry_and_direction_only_not_operator_confirmation
+升伟·新时空,209,21428493,兰美路立交南 → 井口工业园,11516814993,西南医院,8493314656,陈家湾,沙坪坝,8,14,6,screen_false_positive_alternative_stop,凤天大道北段不是209路关系成员；改用最近的方向有效站西南医院。,route_geometry_and_direction_only_not_operator_confirmation
+周李小区,209,21428493,兰美路立交南 → 井口工业园,11516814993,西南医院,8493314656,陈家湾,沙坪坝,8,14,6,screen_false_positive_alternative_stop,凤天大道北段不是209路关系成员；改用最近的方向有效站西南医院。,route_geometry_and_direction_only_not_operator_confirmation

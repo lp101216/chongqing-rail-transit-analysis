@@ -99,3 +99,9 @@ data/processed/*
 !data/processed/shapingba_residential_bus_feeder_screen.csv
 !data/processed/shapingba_bus_feeder_threshold_sensitivity.csv
 !data/processed/shapingba_bus_rail_feeder_screen.gpkg
+!data/processed/shapingba_bus_feeder_route_verification.csv
+!data/processed/shapingba_bus_feeder_break_even.csv
+!data/processed/shapingba_bus_feeder_wait_sensitivity.csv
+!data/processed/shapingba_bus_feeder_survey_priority.csv
+!data/processed/shapingba_bus_route_operation_evidence.csv
+!data/processed/shapingba_bus_feeder_time_candidates.gpkg

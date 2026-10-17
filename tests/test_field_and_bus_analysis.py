@@ -17,6 +17,13 @@ from chongqing_rail_transit.field_validation import (
     completed_observations,
     parse_gpx,
 )
+from chongqing_rail_transit.bus_feeder_time_analysis import (
+    break_even_budget,
+    build_survey_priority,
+    build_wait_sensitivity,
+    directional_slope_route,
+    route_stop_audit_table,
+)
 
 
 def test_parse_gpx_distance_time_and_elevation(tmp_path: Path) -> None:
@@ -151,3 +158,72 @@ def test_bus_threshold_sensitivity_recomputes_candidate_counts() -> None:
     base_rail = result[result["rail_transfer_walk_threshold_m"].eq(300)]
     assert base_rail["spatial_direct_feeder_candidate_count"].tolist() == [1, 2, 3]
     assert base_rail["bus_platform_over_threshold_count"].tolist() == [2, 1, 0]
+
+
+def test_wait_sensitivity_uses_half_headway_but_not_actual_time() -> None:
+    break_even = pd.DataFrame({
+        "residential_name": ["测试住宅"],
+        "route_ref": ["100"],
+        "max_wait_plus_ride_min_vs_flat": [12.0],
+        "max_wait_plus_ride_min_vs_slope": [15.0],
+    })
+    result = build_wait_sensitivity(break_even)
+    row = result.query(
+        "direct_walk_benchmark == 'flat_4_5_kmh' and assumed_headway_min == 10"
+    ).iloc[0]
+    assert row["assumed_expected_wait_min"] == pytest.approx(5.0)
+    assert row["maximum_in_vehicle_min_to_save_time"] == pytest.approx(7.0)
+    assert result["assumption"].str.startswith("parameter_only").all()
+
+
+def test_break_even_budget_deducts_both_walking_legs_on_each_basis() -> None:
+    assert break_even_budget(20.0, 2.0, 3.0) == pytest.approx(15.0)
+    assert break_even_budget(25.0, 4.0, 6.0) == pytest.approx(15.0)
+
+
+def test_directional_slope_route_respects_direction_and_snap_time() -> None:
+    graph = nx.DiGraph()
+    graph.add_edge((0.0, 0.0), (100.0, 0.0), length_m=100.0, time_min=4.0)
+    graph.add_edge((100.0, 0.0), (0.0, 0.0), length_m=100.0, time_min=1.0)
+    destinations = gpd.GeoDataFrame(
+        {"osm_id": ["stop"]}, geometry=[Point(105, 0)], crs="EPSG:32648"
+    )
+    outward = directional_slope_route(graph, Point(0, 0), destinations)
+    assert outward["time_min"] == pytest.approx(4.0 + 5.0 / 75.0)
+    assert outward["distance_m"] == pytest.approx(105.0)
+    reverse_destination = gpd.GeoDataFrame(
+        {"osm_id": ["home"]}, geometry=[Point(0, 0)], crs="EPSG:32648"
+    )
+    inward = directional_slope_route(graph, Point(100, 0), reverse_destination)
+    assert inward["time_min"] == pytest.approx(1.0)
+
+
+def test_survey_priority_is_explicitly_an_investigation_order() -> None:
+    rows = []
+    for residence, route in [
+        ("凤天花园", "1429"), ("卓越·美丽山水", "210"), ("凯莱阳光", "209"),
+        ("升伟·新时空", "209"), ("周李小区", "209"),
+    ]:
+        rows.append({
+            "residential_name": residence, "route_ref": route,
+            "boarding_platform_name": "上车站", "alighting_platform_name": "下车站",
+            "rail_station": "轨道站", "walk_to_boarding_min_4_5": 1.0,
+            "walk_to_boarding_min_slope_model": 1.2,
+            "max_wait_plus_ride_min_vs_flat": 5.0,
+            "max_wait_plus_ride_min_vs_slope": 6.0,
+        })
+    priority = build_survey_priority(pd.DataFrame(rows))
+    assert priority["survey_priority_rank"].tolist() == [1, 2, 3, 4, 5]
+    assert priority["interpretation"].str.contains("不代表公交已经更快").all()
+
+
+def test_route_stop_audit_preserves_false_positive_correction() -> None:
+    audit = route_stop_audit_table()
+    assert len(audit) == 5
+    corrected = audit[audit["residential_name"].isin(["升伟·新时空", "周李小区"])]
+    assert corrected["audit_result"].eq("screen_false_positive_alternative_stop").all()
+    assert corrected["boarding_platform_name"].eq("西南医院").all()
+    assert (audit["alighting_stop_sequence"] - audit["boarding_stop_sequence"]).eq(
+        audit["stop_hops"]
+    ).all()
+    assert audit["operation_verification"].str.contains("not_operator_confirmation").all()
